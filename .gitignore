@@ -5,7 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+/home/arthur/code/dj_ninja_elastic/core/project/settings/local.py
 # Distribution / packaging
 .Python
 build/
