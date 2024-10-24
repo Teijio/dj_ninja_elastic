@@ -2,3 +2,5 @@ db.sqlite3
 *.pyc
 .env
 core/project/settings/local.py
+static/*
+!static/.gitkeep
