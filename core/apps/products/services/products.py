@@ -17,4 +17,9 @@ class ORMProductService(BaseProductService):
     def get_product_list(self) -> Iterable[Product]:
         qs = ProductModel.objects.filter(is_visible=True)
 
+        # тут упрощенный вариант, этап с конвертером пропущен
+        # и мы реализовали псевдо-конвертор в самой модели "to_entity"
         return [product.to_entity() for product in qs]
+
+    def get_product_count(self) -> int:
+        return ProductModel.objects.filter(is_visible=True).count()
