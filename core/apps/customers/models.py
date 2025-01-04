@@ -1,3 +1,4 @@
+from uuid import uuid4
 from django.db import models
 
 from core.apps.common.models import TimedBaseModel
@@ -12,7 +13,8 @@ class Customer(TimedBaseModel):
     token = models.CharField(
         verbose_name="User token",
         max_length=255,
-        unique=True,
+        default=uuid4,
+        unique=False,
     )
 
     def __str__(self) -> str:
