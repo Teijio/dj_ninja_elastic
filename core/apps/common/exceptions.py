@@ -5,4 +5,4 @@ from dataclasses import dataclass
 class ServiceException(Exception):
     @property
     def message(self):
-        return "App exception accured"
+        return "App exception occured"
