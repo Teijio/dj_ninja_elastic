@@ -30,6 +30,7 @@ def _initialize_container() -> punq.Container:
     container.register(BaseCustomerService, ORMCustomerService)
     container.register(BaseCodeService, DjangoCacheCodeService)
     # container.register(BaseSenderService, DummySenderService)
+    # Пример когда передаем множество параметров
     container.register(
         BaseSenderService,
         ComposedSenderService,
@@ -39,5 +40,4 @@ def _initialize_container() -> punq.Container:
         ),
     )
     container.register(BaseAuthServive, AuthService)
-
     return container

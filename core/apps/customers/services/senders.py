@@ -24,6 +24,7 @@ class SmsSenderService(BaseSenderService):
     def send_code(self, customer: CustomerEntity, code: str) -> None:
         print(f"Code to user: {customer}, sent via sms {code}")
 
+# а это пример где множество контейнеров можем передавать и реализовывать в handlers
 @dataclass
 class ComposedSenderService(BaseSenderService):
     sender_services: Iterable[BaseSenderService]

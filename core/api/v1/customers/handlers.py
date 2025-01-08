@@ -5,11 +5,8 @@ from ninja.errors import HttpError
 from core.api.schemas import ApiResponse
 from core.api.v1.customers.schemas import AuthInSchema, AuthOutSchema, TokenInSchema, TokenOutSchema
 from core.apps.common.exceptions import ServiceException
-from core.apps.customers.services.auth import AuthService, BaseAuthServive
-from core.apps.customers.services.codes import DjangoCacheCodeService
-from core.apps.customers.services.customers import ORMCustomerService
-from core.apps.customers.services.senders import DummySenderService
-from core.apps.products.containers import get_container
+from core.apps.customers.services.auth import BaseAuthServive
+from core.project.containers import get_container
 
 router = Router(tags=["Customers"])
 
@@ -17,7 +14,7 @@ router = Router(tags=["Customers"])
 @router.post("auth", response=ApiResponse[AuthOutSchema], operation_id="authorize")
 def auth_handler(request: HttpRequest, schema: AuthInSchema) -> ApiResponse[AuthOutSchema]:
     container = get_container()
-    service = container.resolve(BaseAuthServive)
+    service: BaseAuthServive = container.resolve(BaseAuthServive)
 
     service.authorize(schema.phone)
     return ApiResponse(data=AuthOutSchema(message=f"Code is sent to: {schema.phone}"))
@@ -26,7 +23,7 @@ def auth_handler(request: HttpRequest, schema: AuthInSchema) -> ApiResponse[Auth
 @router.post("confirm", response=ApiResponse[TokenOutSchema], operation_id="confirmCode")
 def get_token_handler(request: HttpRequest, schema: TokenInSchema) -> ApiResponse[TokenOutSchema]:
     container = get_container()
-    service = container.resolve(BaseAuthServive)
+    service: BaseAuthServive = container.resolve(BaseAuthServive)
 
     # Изначальная версия без dependency injection
     # service = AuthService(
@@ -34,6 +31,7 @@ def get_token_handler(request: HttpRequest, schema: TokenInSchema) -> ApiRespons
     #     codes_service=DjangoCacheCodeService(),
     #     sender_service=DummySenderService(),
     # )
+
     try:
         token = service.confirm(schema.code, schema.phone)
     except ServiceException as exception:
