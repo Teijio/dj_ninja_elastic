@@ -27,6 +27,6 @@ class Review(TimedBaseModel):
     )
 
     class Meta:
-        verbose_name = ("Product review",)
-        verbose_name_plural = ("Product reviews",)
+        verbose_name = "Product review"
+        verbose_name_plural = "Product reviews"
         unique_together = (("customer", "product"),)

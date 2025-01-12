@@ -10,4 +10,4 @@ class Review:
     customer: Customer | EntityStatus = field(default=EntityStatus.NOT_LOADED)
     product: Product | EntityStatus = field(default=EntityStatus.NOT_LOADED)
     text: str = field(default="")
-    rating: int
+    rating: int = field(default=1)
