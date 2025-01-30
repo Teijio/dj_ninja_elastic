@@ -1,26 +1,35 @@
 from datetime import datetime
 from django.http import HttpRequest
-from ninja import Router
+from ninja import Header, Router
 from ninja.errors import HttpError
 
 from core.api.schemas import ApiResponse
-from core.api.v1.customers.schemas import AuthInSchema, AuthOutSchema, TokenInSchema, TokenOutSchema
-from core.api.v1.reviews.schemas import ReviewInSchema, ReviewOutSchema
+from core.api.v1.reviews.schemas import CreateReviewSchema, ReviewInSchema, ReviewOutSchema
 from core.apps.common.exceptions import ServiceException
-from core.apps.customers.services.auth import BaseAuthServive
+from core.apps.use_cases.reviews.create import CreateReviewUseCase
 from core.project.containers import get_container
 
 router = Router(tags=["Reviews"])
 
 
-@router.post("{product_id}/rewviews", response=ApiResponse[ReviewOutSchema], operation_id="createReview")
-def create_review(request: HttpRequest, product_id: int, schema: ReviewInSchema) -> ApiResponse[ReviewOutSchema]:
-    return ApiResponse(
-        data=ReviewOutSchema(
-            rating=1,
-            text="hello",
-            id="1",
-            created_at=datetime.now(),
-            updated_at=None,
+@router.post("{product_id}/reviews", response=ApiResponse[ReviewOutSchema], operation_id="createReview")
+def create_review(
+    request: HttpRequest,
+    product_id: int,
+    schema: ReviewInSchema,
+    token: str = Header(alias="Auth-token"),
+) -> ApiResponse[ReviewOutSchema]:
+    container = get_container()
+    use_case = container.resolve(CreateReviewUseCase)
+    try:
+        result = use_case.execute(
+            customer_token=token,
+            product_id=product_id,
+            review=schema.to_entity(),
         )
-    )
+    except ServiceException as error:
+        raise HttpError(
+            status_code=400,
+            message=error.message,
+        )
+    return ApiResponse(data=ReviewOutSchema.from_entity(result))

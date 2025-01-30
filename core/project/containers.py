@@ -13,6 +13,8 @@ from core.apps.customers.services.senders import (
     SmsSenderService,
 )
 from core.apps.products.services.products import BaseProductService, ORMProductService
+from core.apps.products.services.reviews import BaseReviewService, BaseReviewValidatorService, ComposeReviewValidatorService, ORMReviewService
+from core.apps.use_cases.reviews.create import CreateReviewUseCase
 
 
 @lru_cache(1)
@@ -29,7 +31,6 @@ def _initialize_container() -> punq.Container:
     # init customers
     container.register(BaseCustomerService, ORMCustomerService)
     container.register(BaseCodeService, DjangoCacheCodeService)
-    # container.register(BaseSenderService, DummySenderService)
     # Пример когда передаем множество параметров
     container.register(
         BaseSenderService,
@@ -40,4 +41,7 @@ def _initialize_container() -> punq.Container:
         ),
     )
     container.register(BaseAuthServive, AuthService)
+    container.register(BaseReviewService, ORMReviewService)
+    container.register(BaseReviewValidatorService, ComposeReviewValidatorService, validators=[])
+    container.register(CreateReviewUseCase)
     return container

@@ -5,6 +5,7 @@ from core.apps.customers.services.codes import BaseCodeService
 from core.apps.customers.services.customers import BaseCustomerService
 from core.apps.customers.services.senders import BaseSenderService
 
+# TODO Выпилить безнес логику ми пернейсти ее в use_cases
 
 @dataclass(eq=False)
 class BaseAuthServive(ABC):
