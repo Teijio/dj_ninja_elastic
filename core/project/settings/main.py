@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # NOTE: не забыть добавить .parent.parent ибо положили папку вглубь проекта
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
@@ -28,10 +29,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
+    # third party
+    # "elasticapm.contrib.django",
     # first party
     "core.apps.products.apps.ProductsConfig",
-    "core.apps.customers.apps.CustomersConfig"
+    "core.apps.customers.apps.CustomersConfig",
 ]
 
 MIDDLEWARE = [
@@ -121,3 +123,9 @@ STATIC_ROOT = BASE_DIR / "static"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+ELASTIC_APM = {
+    "SERVICE_NAME": "reviews",
+    "SECRET_URL": env("APM_URL", default="http://apm-server:8200"),
+    "DEBUG": True,
+}

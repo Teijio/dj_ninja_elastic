@@ -14,6 +14,7 @@ psycopg2-binary = "^2.9.10"
 environ = "^1.0"
 django-ninja = "^1.3.0"
 punq = "^0.7.0"
+elastic-apm = "^6.23.0"
 
 [tool.poetry.group.dev.dependencies]
 faker = "^33.1.0"
